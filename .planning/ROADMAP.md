@@ -16,7 +16,7 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 ## Phase Details
 
 ### Phase 1: Read Path
-**Status**: completed (2026-05-20)
+**Status**: In Progress
 **Last Updated**: 2026-05-20T02:41:03Z
 **Goal**: Both services run locally, the data model is live, and a user can open the app and see all submitted requests (including a graceful empty state)
 **Depends on**: Nothing (first phase)
