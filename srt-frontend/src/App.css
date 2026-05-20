@@ -1,0 +1,11 @@
+/* App styles */
+nav {
+  padding: 16px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  gap: 8px;
+}
+
+main {
+  padding: 24px;
+}
