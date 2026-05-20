@@ -25,7 +25,11 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
   2. Running `npm run dev` starts the frontend on port 5173 with no errors and no browser CORS failures when calling the backend
   3. The Request List view loads in the browser, displays a table with columns Name, Request Title, Description when records exist, and shows "No requests submitted yet." when the database is empty
   4. If the backend is unreachable, the Request List view shows an error message instead of crashing
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Spring Boot scaffold: H2, Request entity, CorsConfig, GET /api/requests
+- [ ] 01-02-PLAN.md — React+Vite scaffold: App shell, constants, types, RequestList component + Playwright tests
 
 ### Phase 2: Write Path
 **Goal**: A user can fill out the submission form and submit a request; it is immediately visible in the Request List view — the complete create-and-display loop works end-to-end
@@ -44,5 +48,5 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Read Path | 0/TBD | Not started | - |
+| 1. Read Path | 0/2 | Not started | - |
 | 2. Write Path | 0/TBD | Not started | - |
