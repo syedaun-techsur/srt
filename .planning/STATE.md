@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 ## Current Position
 
 Phase: 1 of 2 (Read Path)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-05-20 — Roadmap created; ROADMAP.md and STATE.md initialized
+Plan: 2 of 2 in current phase
+Status: Phase 1 complete — both plans executed
+Last activity: 2026-05-20 — Completed 01-02-PLAN.md (React frontend scaffold)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 2
+- Average duration: ~5 min/plan (estimated)
+- Total execution time: ~10 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-read-path | 2 | ~10 min | ~5 min |
 
 **Recent Trend:**
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 01-01 (Spring Boot backend), 01-02 (React frontend)
+- Trend: On track
 
 *Updated after each plan completion*
 
@@ -45,17 +45,22 @@ Recent decisions affecting current work:
 - Project init: H2 in-memory chosen over Postgres — zero setup, demo-friendly
 - Project init: 2-phase delivery — Phase 1 read path (scaffold + list), Phase 2 write path (form + submit)
 - Project init: Vite + TypeScript for frontend — modern React scaffold, type safety, fast dev server
+- 01-01: Java 21 used instead of Java 17 — Java 17 unavailable; Java 21 compatible with Spring Boot 3.2.0
+- 01-01: Spring Initializr unavailable (network blocked) — project manually scaffolded with identical structure
+- 01-02: SubmissionForm is Phase 2 only — Phase 1 stub is inline JSX placeholder
+- 01-02: import type required for SrtRequest due to TypeScript 6 verbatimModuleSyntax
+- 01-02: Playwright E2E tests written as artifacts; execution deferred to verify phase
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-None yet.
+None.
 
 ## Session Continuity
 
 Last session: 2026-05-20
-Stopped at: Roadmap created — ready to plan Phase 1
+Stopped at: Completed 01-01-PLAN.md (Spring Boot backend scaffold + GET /api/requests)
 Resume file: None
