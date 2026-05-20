@@ -174,3 +174,4 @@ Fields `id` and `createdAt` are silently ignored if present in the request body.
 - `POST` handler: `@PostMapping` with `@RequestBody RequestDto dto` parameter
 - Validation: manual null/blank check on DTO fields, or use `@Valid` + `@NotBlank` on DTO with `@Validated` on the controller
 - JSON serialization: Spring Boot auto-configures Jackson; `LocalDateTime` serialized as ISO 8601 string (configure `spring.jackson.serialization.write-dates-as-timestamps=false` if needed)
+- **JSON field naming:** The `createdAt` Java field serializes as `"createdAt"` (camelCase) in all JSON responses — this is Jackson's default behavior and must not be overridden. Do NOT configure `PropertyNamingStrategies.SNAKE_CASE`. The frontend TypeScript interface expects `createdAt` (camelCase).

@@ -64,7 +64,7 @@ When I click Submit, I want to receive clear, immediate feedback that my request
 - If submission fails (e.g., network error), an error message is shown — not silence
 - The submitted request is visible in the list view within the same browser session
 
-**Success Measure:** After a successful submission, the user sees either a cleared form or their request in the list view within 3 seconds — with zero ambiguous in-between states.
+**Success Measure:** After a successful submission, the user is navigated to the Request List view within 3 seconds and their submitted request is immediately visible — with zero ambiguous in-between states.
 
 **Related Features:** F5, F3, F6  
 **Priority:** P0
@@ -187,7 +187,7 @@ When I need to bootstrap a new full-stack project with a React frontend and Spri
 | JTBD-ID | Outcome | Candidate Natural Acceptance Criterion |
 |---------|---------|---------------------------------------|
 | JTBD-01.1 | Submit valid form in under 60 seconds | Given a new user opens the form, when they fill all three fields and click Submit, then the request is accepted and the form responds within 3 seconds |
-| JTBD-01.2 | Unambiguous post-submit state | Given a successful form submission, when the API returns 201, then the form either clears all fields or the user is redirected to the list view — no intermediate state persists |
+| JTBD-01.2 | Unambiguous post-submit state | Given a successful form submission, when the API returns 201, then the user is navigated to the Request List view where the submitted entry is immediately visible — no intermediate state persists |
 | JTBD-01.3 | Inline errors before API call | Given the form has one or more blank required fields, when the user clicks Submit, then inline error messages appear on each blank field and zero network requests are made |
 | JTBD-02.1 | Full loop from fresh clone | Given only JDK 17+ and Node.js are installed, when both services start with their standard commands, then a submitted form entry appears in the list view with no manual configuration |
 | JTBD-02.2 | Zero CORS errors, correct HTTP codes | Given the frontend calls `POST /api/requests` and `GET /api/requests`, when inspecting browser dev tools, then no CORS errors appear and responses are 201/200 respectively |

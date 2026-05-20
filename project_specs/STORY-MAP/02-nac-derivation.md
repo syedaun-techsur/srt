@@ -10,7 +10,7 @@ Each NaC is derived from the intersection of a JTBD outcome and a specific journ
 | NaC-02 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.1: Orient | Three labeled fields in single vertical stack before user types; required intent clear at a glance | US-5.1 |
 | NaC-03 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.1: Fill | Submit button disabled immediately on valid submit click; double-submission physically prevented | US-5.3 |
 | NaC-04 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.2: Re-submit | Valid second submit after correcting errors succeeds; POST /api/requests called exactly once | US-3.1 |
-| NaC-05 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Submit | POST /api/requests called; form clears and/or user redirected within 3 seconds of 201 response | US-5.1 |
+| NaC-05 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Submit | POST /api/requests called; user is navigated to the Request List view within 3 seconds of 201 response | US-5.1 |
 | NaC-06 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Confirm | Submitted request visible in list table within same session; no manual reload required | US-6.2 |
 | NaC-07 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.3: Navigate | Navigation from form to list is visible and immediate; no URL typing required | US-1.2 |
 | NaC-08 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.3: Load list | Visible loading indicator appears while GET is in flight; clears when data arrives | US-6.5 |

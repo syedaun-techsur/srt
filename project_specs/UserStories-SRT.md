@@ -249,8 +249,7 @@
 - [ ] Form displays three labeled fields stacked vertically: Name (text input), Request Title (text input), Description (textarea)
 - [ ] All three fields display placeholder text: "Your name", "Request title", "Describe your request"
 - [ ] Clicking Submit with all fields filled sends `POST /api/requests` with the entered values
-- [ ] On `201 Created` response, form fields are cleared (reset to empty)
-- [ ] After successful submission, user is navigated to the Request List view or shown a success confirmation message
+- [ ] On `201 Created` response, user is navigated to the Request List view
 - [ ] Submit button is re-enabled after a successful submission
 
 **Priority:** P0 | **Feature Ref:** F5
@@ -268,6 +267,7 @@
 - [ ] No API call is made when any required field is blank
 - [ ] Whitespace-only input (e.g., spaces) is treated as blank and triggers the error
 - [ ] Validation fires on Submit click only — not on every keystroke
+- [ ] Once an inline error is displayed for a field, it clears as soon as that field has a non-blank value (error clears on input, not on re-submit)
 
 **Priority:** P0 | **Feature Ref:** F5
 

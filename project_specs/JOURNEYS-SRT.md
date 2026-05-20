@@ -45,7 +45,7 @@
 | **2. Orient** | Scans the form layout top-to-bottom without typing yet | Submission form (F5) | "Three fields — Name, Request Title, Description. That seems simple enough. Which ones are required?" | Cautiously optimistic | No visible required-field indicators before interaction means uncertainty about what will happen on submit | Display required asterisks (*) and a "All fields required" note above the form before the user touches anything |
 | **3. Fill** | Clicks into Name field; types name; tabs to Request Title; types title; tabs to Description; types description | Submission form inputs (F5) | "Name — that's me. Title — short summary. Description — what I actually need. This feels normal." | Focused, routine | Tab order mismatch or unexpected field jumps would break rhythm; multi-line description textarea too small to see full text | Correct tab order (Name → Title → Description → Submit); auto-grow textarea |
 | **4. Submit** | Clicks the Submit button; waits | Submit button (F5), POST /api/requests (F3) | "Did it go? Is something happening?" | Momentarily anxious — the in-between state | Any visible loading delay without a spinner or disabled-button state creates doubt; silence after clicking is worst case | Disable button immediately on click + show loading indicator; resolve within 3 seconds |
-| **5. Confirm** | Sees form clear or redirect; knows it worked | Cleared form (F5) or List view (F6) | "The form is blank again — it must have worked. I'm done." | Relieved, confident | If the form stays populated with no message, Marcus doesn't know whether to submit again | After 201 response: clear all fields (or redirect to list); no ambiguous in-between state |
+| **5. Confirm** | User is redirected to the list view; sees the new entry | List view (F6) | "There it is — I can see my request. It worked." | Relieved, confident | If no redirect occurs and the form stays populated, Marcus doesn't know whether to submit again | After 201 response: navigate to Request List view; submitted entry is visible immediately |
 
 ---
 
@@ -53,13 +53,13 @@
 
 - **Decision Point — Orient stage:** If Marcus cannot identify which fields are required by sight alone, he may guess or leave one blank, triggering a validation error loop that erodes trust.
 - **Risk of Abandonment — Submit stage:** A click with no visible response (no spinner, no state change) is the most common reason users double-submit or give up entirely. This is the highest-risk moment in the journey.
-- **Delight Opportunity — Confirm stage:** A clean form reset is simple and effective confirmation. An optional "Request submitted!" transient message above the cleared form would add warmth without complexity.
+- **Delight Opportunity — Confirm stage:** Redirecting directly to the list view where the new entry is immediately visible is the strongest possible confirmation — Marcus sees the result, not just an empty form.
 
 ---
 
 #### Success Outcome
 
-Marcus fills all three fields and clicks Submit in a single, uninterrupted pass. The form resets within 3 seconds of clicking Submit, with no ambiguous intermediate state. Total time from page open to confirmed submission: under 60 seconds. *(JTBD-01.1 success measure: first-time user completes submission in under 60 seconds with no documentation.)*
+Marcus fills all three fields and clicks Submit in a single, uninterrupted pass. The user is navigated to the Request List view within 3 seconds of clicking Submit, where the new entry is immediately visible — no ambiguous intermediate state. Total time from page open to confirmed submission: under 60 seconds. *(JTBD-01.1 success measure: first-time user completes submission in under 60 seconds with no documentation.)*
 
 ---
 
@@ -71,7 +71,7 @@ Marcus fills all three fields and clicks Submit in a single, uninterrupted pass.
 | Orient | F5 (Request Submission Form) |
 | Fill | F5 (Request Submission Form) |
 | Submit | F5 (Request Submission Form), F3 (POST Endpoint) |
-| Confirm | F5 (form clear), F6 (list view redirect, optional) |
+| Confirm | F5 (triggers redirect on 201), F6 (list view — new entry immediately visible) |
 
 ---
 
@@ -92,7 +92,7 @@ Marcus fills all three fields and clicks Submit in a single, uninterrupted pass.
 | **2. See errors** | Three inline error messages appear under each blank field | Inline field errors (F5) | "Oh — all three are required. Got it. No big deal." | Mildly surprised, quickly refocused | Generic "form invalid" banners without field-level attribution leave users hunting for the problem | Field-specific messages: "Name is required", "Request Title is required", "Description is required" — placed directly under each input |
 | **3. Correct** | Fills in Name; error under Name disappears; fills Title; error disappears; fills Description; error disappears | Form inputs with real-time or on-change error clearing (F5) | "Each error going away as I type makes me feel like I'm making progress." | Gaining confidence | If errors only clear on re-submit (not on input), the user feels punished; stale red borders after typing is frustrating | Clear each field's error as the user types or when the field gains a value |
 | **4. Re-submit** | Clicks Submit again with all fields filled | Submit button (F5), POST /api/requests (F3) | "This time it should work." | Cautiously optimistic | If the API returns an error for a different reason (e.g., network) with no message, the user is confused | On API error (non-201): show a brief, non-technical error message ("Something went wrong — please try again") |
-| **5. Confirm** | Form clears; knows it worked on the second attempt | Cleared form (F5) | "OK, it worked. Now I know how this form behaves." | Satisfied, not embarrassed | — | Validation recovery is smooth enough that Marcus leaves with confidence, not frustration |
+| **5. Confirm** | User is redirected to the list view; sees the entry | List view (F6) | "There it is. OK, it worked on the second attempt. Now I know how this form behaves." | Satisfied, not embarrassed | — | Validation recovery is smooth enough that Marcus leaves with confidence, not frustration |
 
 ---
 
@@ -106,7 +106,7 @@ Marcus fills all three fields and clicks Submit in a single, uninterrupted pass.
 
 #### Success Outcome
 
-A blank-form Submit fires inline, field-level error messages within 200ms and makes zero network requests. After filling all fields, the second Submit succeeds and the form clears. *(JTBD-01.3 success measure: blank-form submit triggers inline field errors within 200ms; zero API calls made.)*
+A blank-form Submit fires inline, field-level error messages within 200ms and makes zero network requests. After filling all fields, the second Submit succeeds and the user is navigated to the Request List view where the entry is visible. *(JTBD-01.3 success measure: blank-form submit triggers inline field errors within 200ms; zero API calls made.)*
 
 ---
 
@@ -118,7 +118,7 @@ A blank-form Submit fires inline, field-level error messages within 200ms and ma
 | See errors | F5 (inline error messages) |
 | Correct | F5 (real-time error clearing) |
 | Re-submit | F5, F3 (POST Endpoint) |
-| Confirm | F5 (form clear) |
+| Confirm | F5 (triggers redirect on 201), F6 (list view) |
 
 ---
 
@@ -186,7 +186,7 @@ Marcus navigates from the form to the list view and locates his submitted entry 
 | **1. Clone** | Runs `git clone <repo-url>` in terminal | Git, terminal | "One command. Repo lands. Good start." | Neutral, methodical | A repo with uncommitted changes or missing `.gitignore` entries (e.g., `target/`, `node_modules/`) creates noise on clone | Clean `.gitignore` for Maven and Node artifacts; README with exactly two startup commands |
 | **2. Start backend** | Runs `./mvnw spring-boot:run` from repo root | Terminal, Maven wrapper, Spring Boot (F0) | "Should be up in under 30 seconds. Let's see if H2 auto-configures." | Alert, watching logs | Any startup error — missing wrapper, wrong JDK version detected, port 8080 already in use — kills the demo | Maven wrapper committed; H2 and JPA auto-configured; clear startup log confirming port and H2 URL |
 | **3. Start frontend** | Runs `npm run dev` in a second terminal from `frontend/` or root | Terminal, Node.js, Vite (F1) | "Should come up on 5173 with no config. Is the API URL hardcoded or configurable?" | Focused | If `npm install` must be run separately or the API URL is not set, this step breaks | `package.json` scripts include install if needed; API base URL clearly set to `http://localhost:8080` |
-| **4. Submit test request** | Opens `http://localhost:5173`; fills form with test data; clicks Submit | Browser, React form (F5), POST /api/requests (F3) | "Filling in dummy data. Hit submit. Did it return 201? Is the form clearing?" | Engaged, evaluating | A CORS error here is the highest-visibility failure — browser console lights up red; the demo is broken | Spring Boot CORS config explicitly allowing `http://localhost:5173`; form clears on 201 |
+| **4. Submit test request** | Opens `http://localhost:5173`; fills form with test data; clicks Submit | Browser, React form (F5), POST /api/requests (F3) | "Filling in dummy data. Hit submit. Did it return 201? Did it redirect to the list?" | Engaged, evaluating | A CORS error here is the highest-visibility failure — browser console lights up red; the demo is broken | Spring Boot CORS config explicitly allowing `http://localhost:5173`; redirect to list view on 201 |
 | **5. Verify list** | Navigates to list view; sees the test entry in the table | List view (F6), GET /api/requests (F4) | "There it is. Name, title, description — all correct. The full loop works." | Satisfied, confident | If the list shows stale data or requires a manual reload, the demo flow is interrupted | List auto-fetches on mount; no manual reload needed |
 | **6. Confirm zero configuration** | Reviews: no `.env` file edited, no DB setup run, no port changes made | Terminal, browser, file explorer | "Two commands. That's it. This is the pattern I wanted." | Impressed, validated | Any extra step discovered at this point (e.g., "oh you also need to run X") is a trust-breaking moment | Zero-configuration guarantee: H2 auto-schema, CORS pre-configured, ports match by default |
 
@@ -327,9 +327,9 @@ CORS misconfiguration is the single most visible and trust-breaking failure acro
 
 **Appears in:** JRN-01.1 (Confirm stage), JRN-01.2 (Confirm stage), JRN-02.1 (Verify list stage), JRN-02.2 (Inspect POST stage)
 
-Both Marcus and Dana care about what happens immediately after a successful POST. Marcus needs the form to clear so he knows it worked. Dana needs the list to update without a manual reload so she can verify the loop. These are two sides of the same requirement: the POST response (201 with body) must trigger both a form clear *and* an updated list view.
+Both Marcus and Dana care about what happens immediately after a successful POST. Marcus needs to see his request confirmed — the strongest signal is being navigated directly to the list view where his entry is visible. Dana needs the list to reflect the new entry without a manual reload so she can verify the loop. These are two sides of the same requirement: the POST response (201 with body) must trigger navigation to the list view.
 
-**Shared Opportunity:** Design the post-submit flow in F5 to simultaneously clear the form and either redirect to or refresh the list view — satisfying both personas in one implementation decision.
+**Shared Opportunity:** Design the post-submit flow in F5 to navigate to the list view on 201 — satisfying both personas in one implementation decision. Marcus gets unambiguous confirmation; Dana gets the loop verified.
 
 ---
 
@@ -360,19 +360,19 @@ Marcus needs a visible way to get from the form to the list. Dana navigates this
 | JRN-01.1 | Orient | JTBD-01.3 | Required-field indicators visible before typing begins |
 | JRN-01.1 | Fill | JTBD-01.1 | Three clearly labeled fields; correct tab order; no extraneous options |
 | JRN-01.1 | Submit | JTBD-01.1 | Submit triggers API call; button disabled with loading state |
-| JRN-01.1 | Confirm | JTBD-01.2 | Form clears or user redirects within 3 seconds; no ambiguous state |
+| JRN-01.1 | Confirm | JTBD-01.2 | User is navigated to Request List view within 3 seconds; submitted entry is immediately visible |
 | JRN-01.2 | Arrive & skip reading | JTBD-01.3 | No network call fires on blank submit |
 | JRN-01.2 | See errors | JTBD-01.3 | Inline field-level errors appear within 200ms |
 | JRN-01.2 | Correct | JTBD-01.3 | Errors clear per-field as user types |
 | JRN-01.2 | Re-submit | JTBD-01.1 | Valid submit succeeds; 201 returned |
-| JRN-01.2 | Confirm | JTBD-01.2 | Form clears; no ambiguous state |
+| JRN-01.2 | Confirm | JTBD-01.2 | User is navigated to Request List view; submitted entry visible; no ambiguous state |
 | JRN-01.3 | Navigate | JTBD-01.2 | Navigation from form to list is visible and immediate |
 | JRN-01.3 | Load list | JTBD-01.2 | GET /api/requests fetches on mount; shows loading state |
 | JRN-01.3 | Identify entry | JTBD-01.2 | Submitted request appears in table within same session |
 | JRN-02.1 | Clone | JTBD-02.1 | Clean repo with committed Maven wrapper and .gitignore |
 | JRN-02.1 | Start backend | JTBD-02.1 | `./mvnw spring-boot:run` starts with H2 auto-configured in under 30s |
 | JRN-02.1 | Start frontend | JTBD-02.1 | `npm run dev` starts Vite on port 5173 with no additional config |
-| JRN-02.1 | Submit test request | JTBD-02.1, JTBD-02.2 | POST returns 201; no CORS error; form clears |
+| JRN-02.1 | Submit test request | JTBD-02.1, JTBD-02.2 | POST returns 201; no CORS error; user redirected to list view |
 | JRN-02.1 | Verify list | JTBD-02.1 | GET returns submitted entry; list updates without manual reload |
 | JRN-02.1 | Confirm zero configuration | JTBD-02.1 | Full loop achieved with exactly two commands from fresh clone |
 | JRN-02.2 | Inspect GET on list load | JTBD-02.2 | 200 OK with JSON array; `Access-Control-Allow-Origin` header present; no CORS error |

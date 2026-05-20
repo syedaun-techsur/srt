@@ -47,7 +47,7 @@ Marcus is a non-technical or semi-technical business user — a project coordina
 **Success Criteria:**
 - Can complete a full form submission without referring to any documentation
 - Inline validation errors appear immediately when a required field is left blank, before any API call is made
-- After successful submission, the form clears or the user is redirected — no ambiguous "did it work?" state
+- After successful submission, the user is navigated to the Request List view — no ambiguous "did it work?" state
 - The submitted request is visible in the list view within the same session
 
 ---

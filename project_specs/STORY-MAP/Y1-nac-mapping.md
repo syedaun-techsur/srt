@@ -8,18 +8,18 @@ This section cross-checks each NaC against the formal acceptance criteria in Use
 | NaC-02 | Three labeled fields in single vertical stack before user types; required intent clear at a glance | US-5.1 | "Form displays three labeled fields stacked vertically: Name, Request Title, Description" | ✅ |
 | NaC-03 | Submit button disabled immediately on valid submit click; double-submission prevented | US-5.3 | "Submit button is disabled immediately after a valid form submission is initiated" + "A second click...has no effect" | ✅ |
 | NaC-04 | Valid second submit succeeds; POST called exactly once | US-3.1 | "POST /api/requests with JSON body returns 201 Created" + "Identical payloads submitted twice create two separate records" | ✅ |
-| NaC-05 | POST called; form clears and/or user redirected within 3 seconds of 201 | US-5.1 | "On 201 Created response, form fields are cleared" + "After successful submission, user is navigated to the Request List view" | ✅ |
+| NaC-05 | POST called; user navigated to Request List view within 3 seconds of 201 | US-5.1 | "On 201 Created response, user is navigated to the Request List view" | ✅ |
 | NaC-06 | Submitted request visible in list within same session; no manual reload required | US-6.2 | "Navigating to the list view shows the newly submitted request" + "The request appears without requiring a manual page refresh" | ✅ |
 | NaC-07 | Navigation from form to list visible and immediate; no URL typing required | US-1.2 | "Clicking 'View Requests' renders the Request List without a full page reload" + "No console errors appear when switching between views" | ✅ |
 | NaC-08 | Loading indicator while GET in flight; clears when data arrives | US-6.5 | "While GET /api/requests call is in progress, a 'Loading…' text or indicator is displayed" + "loading state clears as soon as the API response is received" | ✅ |
 | NaC-09 | On API failure, entered data preserved; clear error message shown | US-5.4 | "Form fields are NOT cleared on API failure" + "error message...displayed at the form level" | ✅ |
 | NaC-10 | Blank Submit shows three field-level error messages within 200ms; zero network requests | US-5.2 | "No API call is made when any required field is blank" + "Clicking Submit with blank Name shows 'Name is required.'" (×3) | ✅ |
 | NaC-11 | Each error identifies specific blank field by name; shown directly below input | US-5.2 | "'Name is required.' below Name input" / "'Request title is required.' below Title input" / "'Description is required.' below Description textarea" | ✅ |
-| NaC-12 | Error under each field clears when field has non-blank value | US-5.2 | "Validation fires on Submit click only — not on every keystroke" — *Note: US-5.2 specifies validation fires on submit; per-field clearing is described in JOURNEYS but not explicitly in US-5.2 AC. Partial alignment — recommend adding an AC for error-clear-on-input in US-5.2.* | ⚠️ Partial |
+| NaC-12 | Error under each field clears when field has non-blank value | US-5.2 | "Once an inline error is displayed for a field, it clears as soon as that field has a non-blank value (error clears on input, not on re-submit)" | ✅ |
 | NaC-13 | Repo clones cleanly; Maven wrapper committed; .gitignore excludes build artifacts | US-0.1 | "Running ./mvnw spring-boot:run...starts the application without errors" — *Note: .gitignore and repo hygiene are implied but not an explicit AC in US-0.1. Acceptable for demo scope.* | ⚠️ Implied |
 | NaC-14 | Backend starts in under 30s on JDK 17+; no external services required | US-0.1 | "Application starts in under 30 seconds on a standard developer machine with JDK 17+" + "No external services, database servers, or Docker are required" | ✅ |
 | NaC-15 | `npm install && npm run dev` starts Vite on 5173 with no additional config | US-1.1 | "Running npm install && npm run dev starts the Vite dev server without errors" + "Dev server is accessible at http://localhost:5173 by default" | ✅ |
-| NaC-16 | POST returns 201; form clears; no CORS error during test submit | US-3.1 | "POST /api/requests...returns 201 Created" + "response body contains the saved entity including id and createdAt" | ✅ |
+| NaC-16 | POST returns 201; user redirected to list view; no CORS error during test submit | US-3.1 | "POST /api/requests...returns 201 Created" + "response body contains the saved entity including id and createdAt" | ✅ |
 | NaC-17 | GET returns submitted entry; list updates without manual reload | US-6.1 | "Navigating to the Request List screen triggers a GET...on component mount" + "All records returned by the API are rendered" | ✅ |
 | NaC-18 | requests table auto-created from JPA entity; no SQL migration file | US-2.1 | "H2 requests table is created automatically on application startup via Hibernate ddl-auto=create-drop" + "Application restart re-creates the table empty" | ✅ |
 | NaC-19 | Access-Control-Allow-Origin header in GET response; 200 with JSON array or [] | US-0.3 + US-4.2 | "Access-Control-Allow-Origin: http://localhost:5173 header is present in API responses" + "GET...returns 200 OK with body []" | ✅ |
@@ -37,12 +37,11 @@ This section cross-checks each NaC against the formal acceptance criteria in Use
 
 | Status | Count | NaC IDs |
 |--------|-------|---------|
-| ✅ Full alignment | 21 | NaC-01–11, NaC-14–22, NaC-25–26 |
-| ⚠️ Partial / Implied | 5 | NaC-12, NaC-13, NaC-23, NaC-24, NaC-26 |
+| ✅ Full alignment | 22 | NaC-01–22, NaC-25–26 |
+| ⚠️ Partial / Implied | 4 | NaC-13, NaC-23, NaC-24, NaC-26 |
 | ❌ No alignment | 0 | — |
 
 **Recommendations:**
-- **NaC-12** (error clears on field input): Consider adding an acceptance criterion to US-5.2: *"Each inline error message disappears as soon as the corresponding field has a non-whitespace value."* This matches the intent described in JRN-01.2 Stage 3 but is missing from the formal AC.
 - **NaC-13, NaC-23, NaC-24** (repo hygiene, directory structure, CORS class pattern): These are implementation-level constraints captured in JOURNEYS and JTBD but not in formal ACs. For a demo project, this is acceptable — the scaffold stories (US-0.1, US-0.3, US-1.1) deliver the intent even if the structural AC is implied.
 
 ---

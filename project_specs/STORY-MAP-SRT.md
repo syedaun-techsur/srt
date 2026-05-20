@@ -58,7 +58,7 @@ Primary journeys: JRN-01.1 (Form submission), JRN-01.2 (Validation recovery), JR
 | SM-5.2 | **Orient** (JRN-01.2.2) | Attempt blank submit; read inline errors | Epic 5 (F5) | US-5.2: Form Shows Inline Errors for Blank Required Fields | JTBD-01.3 → Clicking Submit with all fields blank shows three field-level error messages within 200ms; zero network requests are made | R2 |
 | SM-5.3 | **Fill** (JRN-01.1.3) | Type in fields; tab between them | Epic 5 (F5) | US-5.3: Submit Button Is Disabled During API Call | JTBD-01.1 → Submit button becomes disabled immediately on valid submit click; double-submission is physically prevented | R2 |
 | SM-5.4 | **Fill / Correct** (JRN-01.2.3) | Retype after error; see errors clear | Epic 5 (F5) | US-5.4: Form Preserves Data and Shows Error on API Failure | JTBD-01.2 → On API failure, entered data is preserved and a clear error message appears; user can retry without re-typing | R2 |
-| SM-5.1b | **Submit** (JRN-01.1.4) | Click Submit; wait for response | Epic 5 (F5) | US-5.1: Submit a Request Through the Web Form | JTBD-01.2 → POST /api/requests is called; form clears and/or user is redirected within 3 seconds of a 201 response | R2 |
+| SM-5.1b | **Submit** (JRN-01.1.4) | Click Submit; wait for response | Epic 5 (F5) | US-5.1: Submit a Request Through the Web Form | JTBD-01.2 → POST /api/requests is called; user is navigated to the Request List view within 3 seconds of a 201 response | R2 |
 | SM-6.2 | **Confirm** (JRN-01.1.5 / JRN-01.3.3) | Form clears or list shows new entry | Epic 6 (F6) | US-6.2: Verify Submitted Request Appears in List Immediately | JTBD-01.2 → Submitted request is visible in the list table within the same session; no manual reload required | R2 |
 | SM-6.5 | **Load list** (JRN-01.3.2) | Navigate to list; see loading state | Epic 6 (F6) | US-6.5: List View Shows Loading State While Fetching | JTBD-01.2 → A visible loading indicator appears while GET /api/requests is in flight; it clears as soon as data arrives | R1 |
 
@@ -103,7 +103,7 @@ Each NaC is derived from the intersection of a JTBD outcome and a specific journ
 | NaC-02 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.1: Orient | Three labeled fields in single vertical stack before user types; required intent clear at a glance | US-5.1 |
 | NaC-03 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.1: Fill | Submit button disabled immediately on valid submit click; double-submission physically prevented | US-5.3 |
 | NaC-04 | JTBD-01.1 | Submit valid form in < 60s | JRN-01.2: Re-submit | Valid second submit after correcting errors succeeds; POST /api/requests called exactly once | US-3.1 |
-| NaC-05 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Submit | POST /api/requests called; form clears and/or user redirected within 3 seconds of 201 response | US-5.1 |
+| NaC-05 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Submit | POST /api/requests called; user is navigated to the Request List view within 3 seconds of 201 response | US-5.1 |
 | NaC-06 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.1: Confirm | Submitted request visible in list table within same session; no manual reload required | US-6.2 |
 | NaC-07 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.3: Navigate | Navigation from form to list is visible and immediate; no URL typing required | US-1.2 |
 | NaC-08 | JTBD-01.2 | Unambiguous post-submit state within 3s | JRN-01.3: Load list | Visible loading indicator appears while GET is in flight; clears when data arrives | US-6.5 |
@@ -323,14 +323,14 @@ This section cross-checks each NaC against the formal acceptance criteria in Use
 | NaC-02 | Three labeled fields in single vertical stack before user types; required intent clear at a glance | US-5.1 | "Form displays three labeled fields stacked vertically: Name, Request Title, Description" | ✅ |
 | NaC-03 | Submit button disabled immediately on valid submit click; double-submission prevented | US-5.3 | "Submit button is disabled immediately after a valid form submission is initiated" + "A second click...has no effect" | ✅ |
 | NaC-04 | Valid second submit succeeds; POST called exactly once | US-3.1 | "POST /api/requests with JSON body returns 201 Created" + "Identical payloads submitted twice create two separate records" | ✅ |
-| NaC-05 | POST called; form clears and/or user redirected within 3 seconds of 201 | US-5.1 | "On 201 Created response, form fields are cleared" + "After successful submission, user is navigated to the Request List view" | ✅ |
+| NaC-05 | POST called; user navigated to Request List view within 3 seconds of 201 | US-5.1 | "On 201 Created response, user is navigated to the Request List view" | ✅ |
 | NaC-06 | Submitted request visible in list within same session; no manual reload required | US-6.2 | "Navigating to the list view shows the newly submitted request" + "The request appears without requiring a manual page refresh" | ✅ |
 | NaC-07 | Navigation from form to list visible and immediate; no URL typing required | US-1.2 | "Clicking 'View Requests' renders the Request List without a full page reload" + "No console errors appear when switching between views" | ✅ |
 | NaC-08 | Loading indicator while GET in flight; clears when data arrives | US-6.5 | "While GET /api/requests call is in progress, a 'Loading…' text or indicator is displayed" + "loading state clears as soon as the API response is received" | ✅ |
 | NaC-09 | On API failure, entered data preserved; clear error message shown | US-5.4 | "Form fields are NOT cleared on API failure" + "error message...displayed at the form level" | ✅ |
 | NaC-10 | Blank Submit shows three field-level error messages within 200ms; zero network requests | US-5.2 | "No API call is made when any required field is blank" + "Clicking Submit with blank Name shows 'Name is required.'" (×3) | ✅ |
 | NaC-11 | Each error identifies specific blank field by name; shown directly below input | US-5.2 | "'Name is required.' below Name input" / "'Request title is required.' below Title input" / "'Description is required.' below Description textarea" | ✅ |
-| NaC-12 | Error under each field clears when field has non-blank value | US-5.2 | "Validation fires on Submit click only — not on every keystroke" — *Note: US-5.2 specifies validation fires on submit; per-field clearing is described in JOURNEYS but not explicitly in US-5.2 AC. Partial alignment — recommend adding an AC for error-clear-on-input in US-5.2.* | ⚠️ Partial |
+| NaC-12 | Error under each field clears when field has non-blank value | US-5.2 | "Once an inline error is displayed for a field, it clears as soon as that field has a non-blank value (error clears on input, not on re-submit)" | ✅ |
 | NaC-13 | Repo clones cleanly; Maven wrapper committed; .gitignore excludes build artifacts | US-0.1 | "Running ./mvnw spring-boot:run...starts the application without errors" — *Note: .gitignore and repo hygiene are implied but not an explicit AC in US-0.1. Acceptable for demo scope.* | ⚠️ Implied |
 | NaC-14 | Backend starts in under 30s on JDK 17+; no external services required | US-0.1 | "Application starts in under 30 seconds on a standard developer machine with JDK 17+" + "No external services, database servers, or Docker are required" | ✅ |
 | NaC-15 | `npm install && npm run dev` starts Vite on 5173 with no additional config | US-1.1 | "Running npm install && npm run dev starts the Vite dev server without errors" + "Dev server is accessible at http://localhost:5173 by default" | ✅ |
@@ -352,12 +352,11 @@ This section cross-checks each NaC against the formal acceptance criteria in Use
 
 | Status | Count | NaC IDs |
 |--------|-------|---------|
-| ✅ Full alignment | 21 | NaC-01–11, NaC-14–22, NaC-25–26 |
-| ⚠️ Partial / Implied | 5 | NaC-12, NaC-13, NaC-23, NaC-24, NaC-26 |
+| ✅ Full alignment | 22 | NaC-01–22, NaC-25–26 |
+| ⚠️ Partial / Implied | 4 | NaC-13, NaC-23, NaC-24, NaC-26 |
 | ❌ No alignment | 0 | — |
 
 **Recommendations:**
-- **NaC-12** (error clears on field input): Consider adding an acceptance criterion to US-5.2: *"Each inline error message disappears as soon as the corresponding field has a non-whitespace value."* This matches the intent described in JRN-01.2 Stage 3 but is missing from the formal AC.
 - **NaC-13, NaC-23, NaC-24** (repo hygiene, directory structure, CORS class pattern): These are implementation-level constraints captured in JOURNEYS and JTBD but not in formal ACs. For a demo project, this is acceptable — the scaffold stories (US-0.1, US-0.3, US-1.1) deliver the intent even if the structural AC is implied.
 
 ---

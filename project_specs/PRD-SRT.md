@@ -141,7 +141,7 @@ An internal stakeholder or developer who reads the list of all submitted request
 - Fields: **Name** (text input, required), **Request Title** (text input, required), **Description** (textarea, required)
 - Required-field validation on submit — all three fields must be non-empty before the request is sent
 - Inline error messages displayed for any blank required field
-- On successful submission: form clears and/or user is redirected to the list view
+- On successful submission: user is navigated to the Request List view
 - Submit button disabled or shows loading state during the API call
 
 **Priority:** P0 (Critical — MVP requirement)

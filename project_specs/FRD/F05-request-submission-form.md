@@ -4,7 +4,7 @@
 
 **PRD Reference:** F5 | **Priority:** P0 | **Phase:** 2
 
-**Description:** The frontend submission screen presents a vertical form with three required fields (Name, Request Title, Description) and a Submit button. On submit, the form performs client-side required-field validation before making any API call. If all fields are valid, it posts the data to `POST /api/requests` (F3) and on success clears the form and/or navigates the user to the Request List view (F6). If any field is empty, inline error messages are shown without making an API call.
+**Description:** The frontend submission screen presents a vertical form with three required fields (Name, Request Title, Description) and a Submit button. On submit, the form performs client-side required-field validation before making any API call. If all fields are valid, it posts the data to `POST /api/requests` (F3) and on success navigates the user to the Request List view (F6). If any field is empty, inline error messages are shown without making an API call.
 
 ---
 
@@ -26,7 +26,8 @@
 - Client-side required-field validation on submit (before API call)
 - Inline error messages beneath each invalid field
 - Submit button disabled during active API call (loading state)
-- On success: form fields cleared; user navigated to list view (or shown success confirmation)
+- On success: user navigated to the Request List view (F6); form fields are cleared as part of navigation
+- Inline error for a field clears as soon as that field has a non-blank value (error-on-input clearing)
 - On API error: error message displayed to the user without clearing the form
 
 ---
@@ -46,9 +47,8 @@
    b. Call `POST http://localhost:8080/api/requests` (via `fetch` or axios) with JSON body `{name, title, description}`.
    c. Await response.
 6. **On success (`201 Created`):**
-   - Clear all three form fields (reset state to `""`).
-   - Navigate to the Request List view (F6), OR show a brief success message (e.g., "Request submitted!") before navigating.
-   - Re-enable the Submit button.
+   - Navigate to the Request List view (F6). This clears the form implicitly (component unmounts).
+   - Re-enable the Submit button (before navigation completes, for correctness).
 7. **On API error (4xx/5xx or network failure):**
    - Display an error message (e.g., "Submission failed. Please try again.") — NOT below a specific field but at the form level.
    - Re-enable the Submit button.
@@ -76,9 +76,9 @@
 ### Outputs
 
 - Rendered form with three labeled fields and a Submit button
-- Inline error messages (one per field, shown only when that field is invalid)
+- Inline error messages (one per field, shown only when that field is invalid; clears per-field on input)
 - Loading/disabled state on Submit button during API call
-- On success: empty form + navigation to list view
+- On success: navigation to the Request List view (F6)
 - On failure: form-level error message, fields preserved
 
 ---
@@ -88,8 +88,9 @@
 - **Name:** `name.trim()` must not be empty. Error message: `"Name is required."`
 - **Request Title:** `title.trim()` must not be empty. Error message: `"Request title is required."`
 - **Description:** `description.trim()` must not be empty. Error message: `"Description is required."`
-- Validation fires only on Submit click — NOT on every keystroke (no real-time validation required).
+- Validation fires only on Submit click — NOT on every keystroke (no proactive real-time validation).
 - All three fields are checked on each submit attempt; multiple errors can be shown simultaneously.
+- Once an inline error is displayed for a field, it clears as soon as that field's value is non-blank (i.e., `field.trim() !== ""`). This clears on input change, not on re-submit.
 - No length limits, no format/regex validation, no cross-field rules.
 - Client sends trimmed values to the API (or raw values — the server also validates).
 
