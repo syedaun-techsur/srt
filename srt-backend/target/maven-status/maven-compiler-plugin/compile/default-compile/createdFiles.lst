@@ -1,0 +1,5 @@
+com/example/srt/repository/RequestRepository.class
+com/example/srt/SrtApplication.class
+com/example/srt/controller/RequestController.class
+com/example/srt/config/CorsConfig.class
+com/example/srt/entity/Request.class
