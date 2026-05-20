@@ -33,7 +33,7 @@ Plans:
 - [ ] 01-02-PLAN.md — React+Vite scaffold: App shell, constants, types, RequestList component + Playwright tests
 
 ### Phase 2: Write Path
-**Status**: completed (2026-05-20)
+**Status**: In Progress
 **Last Updated**: 2026-05-20T03:34:43Z
 **Goal**: A user can fill out the submission form and submit a request; it is immediately visible in the Request List view — the complete create-and-display loop works end-to-end
 **Depends on**: Phase 1
