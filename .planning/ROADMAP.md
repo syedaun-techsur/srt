@@ -10,8 +10,8 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 - Integer phases (1, 2): Planned milestone work
 - Decimal phases (1.1, 2.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view
-- [ ] **Phase 2: Write Path** - POST endpoint, submission form, and end-to-end create-display loop verified
+- [x] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view
+- [x] **Phase 2: Write Path** - POST endpoint, submission form, and end-to-end create-display loop verified
 
 ## Phase Details
 
@@ -33,7 +33,8 @@ Plans:
 - [ ] 01-02-PLAN.md — React+Vite scaffold: App shell, constants, types, RequestList component + Playwright tests
 
 ### Phase 2: Write Path
-**Status**: passed
+**Status**: completed (2026-05-20)
+**Last Updated**: 2026-05-20T03:34:43Z
 **Goal**: A user can fill out the submission form and submit a request; it is immediately visible in the Request List view — the complete create-and-display loop works end-to-end
 **Depends on**: Phase 1
 **Requirements**: API-02, FORM-01, FORM-02, FORM-03, FORM-04
