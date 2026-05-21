@@ -11,3 +11,11 @@ node_modules/
 test-results/
 playwright-report/
 # <<< pivota:opencode-ignore
+dist/
+build/
+.next/
+.nuxt/
+.vite/
+.turbo/
+coverage/
+.cache/
