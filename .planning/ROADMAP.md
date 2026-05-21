@@ -40,7 +40,11 @@ Plans:
   2. Submitting the form with one or more blank fields shows inline validation errors per field and makes no API call
   3. Successfully submitting the form navigates the user to the Request List view where the new entry is immediately visible
   4. If the API call fails, the form shows a form-level error message and preserves all entered field values
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — RequestDto + POST /api/requests (201 valid / 400 blank)
+- [ ] 02-02-PLAN.md — SubmissionForm component + App.tsx update + 6 Playwright E2E tests
 
 ## Progress
 
