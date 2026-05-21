@@ -18,7 +18,7 @@ test.describe('SubmissionForm component', () => {
     await expect(page.getByLabel('Name')).toBeVisible();
     await expect(page.getByLabel('Request Title')).toBeVisible();
     await expect(page.getByLabel('Description')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Submit', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
   });
 
   test('shows inline validation errors when submitting blank form', async ({ page }) => {
@@ -28,7 +28,7 @@ test.describe('SubmissionForm component', () => {
 
     await page.goto('/');
     await page.getByRole('button', { name: 'Submit Request' }).click();
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     await expect(page.getByText('Name is required')).toBeVisible();
     await expect(page.getByText('Request Title is required')).toBeVisible();
@@ -49,7 +49,7 @@ test.describe('SubmissionForm component', () => {
 
     await page.goto('/');
     await page.getByRole('button', { name: 'Submit Request' }).click();
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     // Give brief time for any erroneous fetch call
     await page.waitForTimeout(200);
@@ -88,7 +88,7 @@ test.describe('SubmissionForm component', () => {
     await page.getByLabel('Request Title').fill('Fix login bug');
     await page.getByLabel('Description').fill('Login crashes on mobile.');
 
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     // Should navigate to list view showing the new record
     await expect(page.getByRole('cell', { name: 'Alice' })).toBeVisible();
@@ -112,7 +112,7 @@ test.describe('SubmissionForm component', () => {
     await page.getByLabel('Request Title').fill('Add feature');
     await page.getByLabel('Description').fill('Export to CSV.');
 
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     await expect(page.getByText('Submission failed. Please try again.')).toBeVisible();
     // Field values preserved
@@ -130,12 +130,12 @@ test.describe('SubmissionForm component', () => {
     await page.getByRole('button', { name: 'Submit Request' }).click();
 
     // Submit blank to trigger all errors
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
     await expect(page.getByText('Name is required')).toBeVisible();
 
     // Fill in the name field — name error should clear on next submit
     await page.getByLabel('Name').fill('Carol');
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     // Name error gone, but title + description errors still shown
     await expect(page.getByText('Name is required')).not.toBeVisible();
