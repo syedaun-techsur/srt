@@ -3,14 +3,14 @@ pivota_spec_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-read-path-01-PLAN.md
-last_updated: "2026-05-20T16:38:49.205Z"
+stopped_at: Completed 02-write-path-02-PLAN.md
+last_updated: "2026-05-21T22:49:58.700Z"
 last_activity: 2026-05-20 — Roadmap created; ROADMAP.md and STATE.md initialized
 progress:
   total_phases: 2
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 4
   percent: 50
 ---
 
@@ -54,6 +54,8 @@ Progress: [█████░░░░░] 50%
 *Updated after each plan completion*
 | Phase 01-read-path P02 | 3min | 2 tasks | 9 files |
 | Phase 01-read-path P01 | 3min | 2 tasks | 8 files |
+| Phase 02-write-path P01 | 1min | 1 tasks | 3 files |
+| Phase 02-write-path P02 | 1min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -70,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 01-read-path]: React 19 / Vite 8 / TypeScript 6 used (newer scaffold defaults, compatible with plan requirements)
 - [Phase 01-read-path]: Spring Boot 3.5.0 (not 3.2.0): Spring Initializr minimum is now >=3.5.0; 3.5.0 is API-compatible with all planned code
 - [Phase 01-read-path]: Java 21 (not Java 17): only Java 21 available in environment; fully compatible with Spring Boot 3.x
+- [Phase 02-write-path]: Used DTO pattern (RequestDto) to separate incoming POST payload from JPA entity; spring-boot-starter-validation added explicitly (not bundled in starter-web for Spring Boot 3.x)
+- [Phase 02-write-path]: npm install required before build (node_modules was empty in environment)
+- [Phase 02-write-path]: E2E test execution deferred to verify phase per test_execution_boundary rules
 
 ### Pending Todos
 
@@ -81,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-20T16:38:49.204Z
-Stopped at: Completed 01-read-path-01-PLAN.md
+Last session: 2026-05-21T22:49:58.698Z
+Stopped at: Completed 02-write-path-02-PLAN.md
 Resume file: None
