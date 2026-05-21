@@ -2,107 +2,112 @@
 phase: 02-write-path
 plan: "01"
 subsystem: api
-tags: [spring-boot, java, post, dto, validation, rest-api]
+tags: [spring-boot, java, rest-api, dto, post-endpoint, validation]
 
 # Dependency graph
 requires:
   - phase: 01-read-path
-    provides: "Plan 01-01 - Spring Boot backend, H2, Request entity, GET /api/requests"
+    provides: Spring Boot 3.5.0 backend, Request JPA entity, RequestRepository, CORS config, GET /api/requests
 provides:
-  - RequestDto (name, title, description) — POST request body
-  - POST /api/requests — 201 Created with saved record on success
-  - POST /api/requests — 400 Bad Request with error JSON on blank field
-  - GET /api/requests — still returns 200 OK (no regression)
+  - POST /api/requests endpoint accepting name/title/description JSON body
+  - RequestDto class for POST request body deserialization
+  - Required-field validation returning 400 on blank/missing fields
+  - 201 Created response with saved Request entity (id, createdAt)
+  - GET /api/requests continues to work (no regression)
 affects:
-  - 02-02-PLAN.md (frontend SubmissionForm calls this endpoint)
+  - 02-02-PLAN.md (frontend SubmissionForm calls this POST endpoint)
 
 # Tech tracking
 tech-stack:
-  added:
-    - RequestDto (plain Java class, no Jakarta validation — manual isBlank check)
+  added: []
   patterns:
-    - Manual blank-check validation in controller (no @Valid / @NotBlank — keeps it simple per scope)
-    - ResponseEntity<?> return type for mixed 201/400 responses
-    - HashMap for error body ({"error": "...", "message": "..."})
+    - DTO pattern for POST request body (RequestDto separate from entity)
+    - Manual required-field validation with isBlank helper (no Bean Validation dependency)
+    - ResponseEntity<?> wildcard return type for multi-response (201/400) endpoints
 
 key-files:
   created:
     - srt-backend/src/main/java/com/example/srt/dto/RequestDto.java
   modified:
     - srt-backend/src/main/java/com/example/srt/controller/RequestController.java
-    - srt-backend/pom.xml (java.version 21 → 17)
 
 key-decisions:
-  - "Java 17 used (not 21) — only Java 17 available in environment this session; Spring Boot 3.5.0 supports Java 17+"
-  - "Manual isBlank validation instead of @Valid/@NotBlank — simpler, no additional dependency, sufficient for scope"
-  - "ResponseEntity<?> used for POST return type — needed to return both Request (201) and Map<String,String> (400)"
+  - "Used manual isBlank() validation instead of @Valid/@NotBlank — avoids adding spring-boot-starter-validation dependency, sufficient for required-field-only constraint"
+  - "ResponseEntity<?> wildcard return type allows returning both List<Request> (GET) and error Map (POST 400) from same controller class"
 
 patterns-established:
-  - "DTO pattern: separate RequestDto for POST body; entity not exposed directly in request"
-  - "Error body: {\"error\": \"Validation failed\", \"message\": \"...\"}  consistent JSON error shape"
+  - "DTO pattern: separate RequestDto for POST body, Request entity for JPA persistence — no @RequestBody directly on entity"
+  - "Validation inline in controller: simple isBlank helper, no annotation-based validation for this scope"
 
 # Metrics
-duration: 5min
+duration: 1min
 completed: 2026-05-21
 ---
 
-# Phase 2 Plan 01: POST Endpoint Summary
+# Phase 2 Plan 1: POST /api/requests Endpoint Summary
 
-**RequestDto + POST /api/requests returning 201 on valid body, 400 on blank field; GET /api/requests unaffected**
+**POST /api/requests endpoint with RequestDto, required-field validation (400 on blank), and 201 Created response with saved entity including id and createdAt**
 
 ## Performance
 
-- **Duration:** 5 min
-- **Completed:** 2026-05-21
+- **Duration:** 1 min
+- **Started:** 2026-05-21T20:39:25Z
+- **Completed:** 2026-05-21T20:39:58Z
 - **Tasks:** 1
-- **Files modified:** 3 (1 created, 2 modified)
+- **Files modified:** 2
 
 ## Accomplishments
+- `RequestDto` created in new `dto/` package with name/title/description fields and standard getters/setters
+- `RequestController` extended with `@PostMapping` handler that validates required fields
+- Blank or null field returns `400 Bad Request` with `{"error": "Validation failed", "message": "name, title, and description are required"}`
+- Valid request persisted via JPA and returned as `201 Created` with entity JSON (includes server-assigned `id` and `createdAt`)
+- `GET /api/requests` endpoint unchanged — no regression
+- Backend compiles cleanly (`./mvnw compile` exits 0)
 
-- `RequestDto.java` created in new `dto/` package — plain Java DTO with name/title/description
-- `RequestController.java` extended with `@PostMapping` — validates fields, persists via JPA, returns 201 with saved entity
-- Blank/null field validation: returns 400 `{"error": "Validation failed", "message": "name, title, and description are required"}`
-- GET /api/requests unbroken — verified 200 with array of submitted records
-- Backend starts cleanly with Java 17 and Spring Boot 3.5.0
+## Task Commits
 
-## API Contract
+Each task was committed atomically:
 
-**POST /api/requests**
-- Request: `{"name": "...", "title": "...", "description": "..."}`
-- Success: `201 Created` — `{"id": 1, "name": "...", "title": "...", "description": "...", "createdAt": "2026-05-21T..."}`
-- Blank field: `400 Bad Request` — `{"error": "Validation failed", "message": "name, title, and description are required"}`
+1. **Task 1: Create RequestDto and add POST endpoint to RequestController** - `defee05` (feat)
 
-**GET /api/requests** — still `200 OK` with JSON array (no regression)
-
-## Commit
-
-- `f811a53` — feat(02-01): add RequestDto and POST /api/requests endpoint
+**Plan metadata:** (to be committed with this SUMMARY)
 
 ## Files Created/Modified
-
-- `srt-backend/src/main/java/com/example/srt/dto/RequestDto.java` — DTO with name/title/description getters+setters
-- `srt-backend/src/main/java/com/example/srt/controller/RequestController.java` — added @PostMapping with validation
-- `srt-backend/pom.xml` — java.version updated 21 → 17 (Java 17 available this session)
+- `srt-backend/src/main/java/com/example/srt/dto/RequestDto.java` - DTO for POST request body (name, title, description with getters/setters)
+- `srt-backend/src/main/java/com/example/srt/controller/RequestController.java` - Extended with @PostMapping createRequest, validation logic, and isBlank helper
 
 ## Decisions Made
-
-- **Java 17 instead of 21:** Java 21 not installed in this session's environment; Java 17 is available and Spring Boot 3.5.0 supports Java 17+. Updated pom.xml accordingly.
-- **Manual isBlank validation:** Kept simple — no Jakarta Validation dependency needed; `isBlank()` helper method in controller is sufficient per scope.
+- **Manual validation over @Valid/@NotBlank:** Adding `spring-boot-starter-validation` dependency for required-field-only validation would be over-engineering. The `isBlank()` helper is self-contained and readable.
+- **ResponseEntity<?> wildcard:** Allows the same controller to return typed `List<Request>` on GET and error `Map<String,String>` on POST 400 without casting issues.
 
 ## Deviations from Plan
 
-**1. [Rule 3 - Blocking] Java 17 instead of 21 in pom.xml**
-- **Found during:** Task 1 (compile verification)
-- **Issue:** Java 21 not available; default-jdk-headless installed Java 17
-- **Fix:** Updated `<java.version>` from 21 to 17 in pom.xml; Spring Boot 3.5.0 supports Java 17+
-- **Files modified:** `srt-backend/pom.xml`
-- **Verification:** `./mvnw compile` succeeded; backend started and endpoints verified
+None - plan executed exactly as written.
+
+## Issues Encountered
+
+None.
+
+## User Setup Required
+
+None - no external service configuration required.
 
 ## Next Phase Readiness
 
-- POST endpoint fully operational; ready for frontend SubmissionForm (plan 02-02)
-- CORS already allows POST from `http://localhost:5173` (configured in Phase 1 CorsConfig.java)
+- POST /api/requests is ready for the frontend SubmissionForm to call
+- CORS already configured for `http://localhost:5173` in Phase 1 — POST requests will not be blocked
+- Ready for Plan 02-02: React SubmissionForm component
 
 ---
 *Phase: 02-write-path*
 *Completed: 2026-05-21*
+
+## Self-Check: PASSED
+
+All key files verified present on disk:
+- ✅ srt-backend/src/main/java/com/example/srt/dto/RequestDto.java
+- ✅ srt-backend/src/main/java/com/example/srt/controller/RequestController.java
+- ✅ .planning/phases/02-write-path/02-01-SUMMARY.md
+
+Commits verified:
+- ✅ defee05 — feat(02-01): add RequestDto and POST /api/requests endpoint

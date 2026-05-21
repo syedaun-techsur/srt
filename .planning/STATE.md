@@ -3,15 +3,15 @@ pivota_spec_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-write-path-02-PLAN.md
-last_updated: "2026-05-21T18:30:51.307Z"
+stopped_at: Completed 02-write-path-01-PLAN.md
+last_updated: "2026-05-21T20:40:45.380Z"
 last_activity: 2026-05-21 — Phase 2 plans created (02-01-PLAN.md, 02-02-PLAN.md)
 progress:
   total_phases: 2
   completed_phases: 2
   total_plans: 4
-  completed_plans: 3
-  percent: 50
+  completed_plans: 4
+  percent: 75
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: 2 of 2 (Write Path) — DONE
-Plan: 2 of 2 complete
-Status: All requirements delivered
-Last activity: 2026-05-21 — Phase 2 executed; POST endpoint + SubmissionForm + 11 tests passing
+Phase: 2 of 2 (Write Path)
+Plan: 1 of 2 in current phase
+Status: Executing — 02-02-PLAN.md is next
+Last activity: 2026-05-21 — Completed 02-01-PLAN.md (POST /api/requests endpoint)
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 75%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [██████████] 100%
 | Phase 01-read-path P02 | 3min | 2 tasks | 9 files |
 | Phase 01-read-path P01 | 3min | 2 tasks | 8 files |
 | Phase 02-write-path P02 | 2min | 2 tasks | 3 files |
+| Phase 02-write-path P01 | 1min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 01-read-path]: Java 21 (not Java 17): only Java 21 available in environment; fully compatible with Spring Boot 3.x
 - [Phase 02-write-path]: E2E test execution deferred to verify phase per test_execution_boundary rules
 - [Phase 02-write-path]: Rule 3 auto-fix: npm install run to restore missing node_modules before build verification
+- [Phase 02-write-path]: Manual isBlank() validation over @Valid/@NotBlank — avoids spring-boot-starter-validation dependency for required-field-only constraint
+- [Phase 02-write-path]: DTO pattern: separate RequestDto for POST body, Request entity for JPA — no @RequestBody directly on entity
 
 ### Pending Todos
 
@@ -84,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-21T18:30:51.306Z
-Stopped at: Completed 02-write-path-02-PLAN.md
+Last session: 2026-05-21T20:40:45.376Z
+Stopped at: Completed 02-write-path-01-PLAN.md
 Resume file: None
