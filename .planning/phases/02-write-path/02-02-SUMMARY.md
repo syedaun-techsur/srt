@@ -1,31 +1,30 @@
 ---
 phase: 02-write-path
-plan: "02"
+plan: 02
 subsystem: ui
-tags: [react, typescript, form, validation, playwright, fetch]
+tags: [react, typescript, playwright, fetch, form-validation]
 
 # Dependency graph
 requires:
-  - phase: 02-write-path
-    provides: "Plan 02-01 - POST /api/requests endpoint"
   - phase: 01-read-path
-    provides: "Plan 01-02 - React+Vite scaffold, App shell, constants, types"
+    provides: "App shell navigation, RequestList component, API_BASE_URL constant, TypeScript types"
+  - phase: 02-write-path
+    provides: "Plan 01 - POST /api/requests backend endpoint"
 provides:
-  - SubmissionForm component: Name/Title/Description inputs, inline validation, POST on submit
-  - App.tsx updated: SubmissionForm replaces Phase 1 placeholder stub
-  - 6 Playwright E2E tests for all form states
+  - "SubmissionForm component with inline validation and POST submit"
+  - "App.tsx updated to render SubmissionForm (Phase 1 stub replaced)"
+  - "6 Playwright E2E tests for SubmissionForm using page.route() mocking"
 affects: []
 
 # Tech tracking
 tech-stack:
   added: []
   patterns:
-    - "Controlled inputs with useState for each field"
-    - "FieldErrors interface for per-field inline validation state"
-    - "onSuccess callback prop for post-submit navigation (keeps form decoupled from routing)"
-    - "noValidate on form — React handles validation, not browser"
-    - "role=alert on error spans/p for accessibility"
-    - "exact: true in Playwright getByRole button locators to avoid ambiguity"
+    - "Controlled form inputs with useState for each field value"
+    - "FieldErrors interface pattern: validate() returns error map, setFieldErrors updates display"
+    - "onSuccess callback prop: parent passes () => setActiveView('list') for navigation"
+    - "noValidate on form element prevents browser native validation"
+    - "role='alert' on all error elements for accessibility"
 
 key-files:
   created:
@@ -35,104 +34,96 @@ key-files:
     - srt-frontend/src/App.tsx
 
 key-decisions:
-  - "onSuccess prop pattern: SubmissionForm calls onSuccess() on 201; App.tsx passes () => setActiveView('list') — keeps navigation logic in App"
-  - "exact: true in button locators: 'Submit' without exact matched 'Submit Request' as partial match — fixed to exact:true"
-  - "NODE_PATH=./node_modules needed: e2e/ is outside srt-frontend/ so @playwright/test import needs NODE_PATH pointing to srt-frontend/node_modules"
+  - "E2E test execution deferred to verify phase per test_execution_boundary rules"
+  - "Rule 3 auto-fix: npm install run to restore missing node_modules before build"
 
 patterns-established:
-  - "Controlled form pattern: one useState per field, validate() returns FieldErrors, setFieldErrors on invalid"
-  - "API error preserved fields: catch block sets apiError but does not reset name/title/description state"
-  - "Playwright exact button match: use { name: '...', exact: true } when button label is substring of another button"
+  - "FieldErrors pattern: validate() returns error map, only set on submit attempt"
+  - "API error isolation: catch block sets apiError string, field values untouched"
 
 # Metrics
-duration: 5min
+duration: 2min
 completed: 2026-05-21
 ---
 
 # Phase 2 Plan 02: SubmissionForm Summary
 
-**SubmissionForm with inline validation, POST to backend, success navigation; 6/6 Playwright E2E tests passing**
+**React SubmissionForm with inline field validation, POST-to-backend, onSuccess navigation, and 6 Playwright E2E tests using page.route() mocking**
 
 ## Performance
 
-- **Duration:** 5 min
-- **Completed:** 2026-05-21
+- **Duration:** 2 min
+- **Started:** 2026-05-21T18:28:03Z
+- **Completed:** 2026-05-21T18:29:50Z
 - **Tasks:** 2
-- **Files created/modified:** 3
+- **Files modified:** 3 (2 created, 1 modified)
 
 ## Accomplishments
+- SubmissionForm component with controlled inputs for Name, Request Title, Description
+- Inline validation: `validate()` returns FieldErrors map, errors shown per field with `role="alert"`
+- POST to `${API_BASE_URL}/requests` using `CreateRequestPayload` type (no hardcoded URLs)
+- `onSuccess` callback called after successful POST — App.tsx passes `() => setActiveView('list')`
+- API error message "Submission failed. Please try again." shown on failure; field values preserved
+- App.tsx Phase 1 placeholder stub replaced with `<SubmissionForm onSuccess={...} />`
+- 6 Playwright E2E tests covering all form states using page.route() mocking
 
-- `SubmissionForm.tsx` created: controlled form with Name/Request Title/Description inputs
-- Inline validation: blank field → per-field error message; no POST call made
-- On successful POST: calls `onSuccess()` → App.tsx navigates to list view
-- On failed POST: shows "Submission failed. Please try again." while preserving all field values
-- `App.tsx` updated: replaces `<div>Form coming in Phase 2.</div>` stub with `<SubmissionForm onSuccess={() => setActiveView('list')} />`
-- 6/6 Playwright E2E tests pass with `page.route()` mocking (no live backend needed)
-- 5/5 existing RequestList tests still pass (no regression)
+## Task Commits
 
-## Test Results
+Each task was committed atomically:
 
-```
-submission-form.spec.ts — 6 passed
-  ✓ renders Name, Request Title, Description fields and Submit button
-  ✓ shows inline validation errors when submitting blank form
-  ✓ does not call API when form has blank fields
-  ✓ navigates to list view and shows new entry after successful submission
-  ✓ shows API error message and preserves field values on submission failure
-  ✓ clears inline validation errors when user fills in a field
+1. **Task 1: Implement SubmissionForm component and update App.tsx** - `6708608` (feat)
+2. **Task 2: Write Playwright E2E tests for SubmissionForm** - `af0a6e9` (feat)
 
-request-list.spec.ts — 5 passed (no regression)
-```
-
-## Commit
-
-- `36d2d06` — feat(02-02): add SubmissionForm component, update App.tsx, 6 E2E tests passing
+**Plan metadata:** (docs commit below)
 
 ## Files Created/Modified
-
-- `srt-frontend/src/components/SubmissionForm.tsx` — form component with controlled inputs, validation, POST, onSuccess callback
-- `srt-frontend/src/App.tsx` — imports SubmissionForm, replaces Phase 1 stub
-- `e2e/submission-form.spec.ts` — 6 E2E tests with page.route() mocking
-
-## How to Run Tests
-
-```bash
-cd srt-frontend
-NODE_PATH=./node_modules npx playwright test ../e2e/submission-form.spec.ts --reporter=list
-```
+- `srt-frontend/src/components/SubmissionForm.tsx` - Form with controlled inputs, inline validation, POST fetch, onSuccess callback
+- `srt-frontend/src/App.tsx` - App shell updated to render SubmissionForm instead of placeholder stub
+- `e2e/submission-form.spec.ts` - 6 E2E tests covering all form states with page.route() mocking
 
 ## Decisions Made
-
-- **`onSuccess` prop pattern:** SubmissionForm receives `onSuccess: () => void` callback and calls it after 201. App.tsx passes `() => setActiveView('list')`. Keeps routing logic in App, form stays decoupled.
-- **`exact: true` in Playwright locators:** `getByRole('button', { name: 'Submit' })` was ambiguous — matched both "Submit Request" and "Submit" buttons. Fixed with `{ name: 'Submit', exact: true }`.
-- **`NODE_PATH` for Playwright:** The `e2e/` directory is at project root (sibling of `srt-frontend/`). Node module resolution doesn't walk into `srt-frontend/node_modules` from there. Running Playwright with `NODE_PATH=./node_modules` from `srt-frontend/` resolves `@playwright/test` correctly.
+- **E2E test execution deferred**: Per `<test_execution_boundary>` rules, Playwright E2E tests written but not executed. Tests will run in verify phase.
+- **import type for CreateRequestPayload**: TypeScript 6 verbatimModuleSyntax requires `import type` for type-only imports (consistent with Phase 1 pattern).
 
 ## Deviations from Plan
 
 ### Auto-fixed Issues
 
-**1. [Rule 1 - Bug] Playwright strict mode violation: ambiguous 'Submit' button locator**
-- **Found during:** Task 2 (Playwright test run)
-- **Issue:** `getByRole('button', { name: 'Submit' })` matched both "Submit Request" and "Submit" buttons — Playwright strict mode error
-- **Fix:** Added `exact: true` to all Submit button locators: `getByRole('button', { name: 'Submit', exact: true })`
-- **Files modified:** `e2e/submission-form.spec.ts`
-- **Verification:** All 6 tests pass after fix
-
-**2. [Rule 3 - Blocking] @playwright/test module resolution outside srt-frontend/**
-- **Found during:** Task 2 (test execution)
-- **Issue:** `e2e/` is outside `srt-frontend/`; `@playwright/test` import couldn't resolve without NODE_PATH
-- **Fix:** Run tests with `NODE_PATH=./node_modules npx playwright test` from `srt-frontend/`
-- **Files modified:** None (runtime flag only)
-- **Verification:** Tests run and pass
+**1. [Rule 3 - Blocking] Ran npm install to restore missing node_modules**
+- **Found during:** Task 1 (build verification)
+- **Issue:** `node_modules` was empty (only `.tmp` directory present), causing `tsc` to fail with "Cannot find type definition file for 'vite/client'" and 'node'
+- **Fix:** Ran `npm install` in `srt-frontend/` — installed 155 packages successfully
+- **Files modified:** `srt-frontend/node_modules/` (restored; not committed — in .gitignore)
+- **Verification:** `npm run build` passed with exit code 0 after install
+- **Committed in:** N/A (node_modules not committed; build verified before task commit `6708608`)
 
 ---
 
-**Total deviations:** 2 auto-fixed (1 bug, 1 env)
-**Impact on plan:** No scope changes. All 6 tests pass; all 11 tests pass total.
+**Total deviations:** 1 auto-fixed (1 blocking dependency restore)
+**Impact on plan:** Necessary environment fix to unblock TypeScript compilation. No scope creep.
+
+## Issues Encountered
+None — plan executed successfully. One blocking issue auto-resolved via `npm install`.
 
 ## User Setup Required
+None - no external service configuration required.
 
-None — `npm install` in `srt-frontend/` handles all dependencies.
+## Next Phase Readiness
+- Phase 2 is now complete — all 4 planned plans executed (02-01 backend, 02-02 frontend form)
+- Write path complete: SubmissionForm → POST /api/requests → navigate to RequestList
+- Start the full stack: `cd srt-backend && ./mvnw spring-boot:run` + `cd srt-frontend && npm run dev`
+- Run Playwright tests (verify phase): `cd srt-frontend && npx playwright test ../e2e/submission-form.spec.ts`
+- Tests written; execution deferred to verify phase
+
+## Self-Check: PASSED
+
+All key files exist on disk and all task commits verified in git history.
+
+- ✅ srt-frontend/src/components/SubmissionForm.tsx
+- ✅ srt-frontend/src/App.tsx (updated, SubmissionForm imported and rendered)
+- ✅ e2e/submission-form.spec.ts
+- ✅ Commit 6708608 (Task 1)
+- ✅ Commit af0a6e9 (Task 2)
 
 ---
 *Phase: 02-write-path*
