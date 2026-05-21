@@ -10,13 +10,13 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 - Integer phases (1, 2): Planned milestone work
 - Decimal phases (1.1, 2.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view
-- [ ] **Phase 2: Write Path** - POST endpoint, submission form, and end-to-end create-display loop verified
+- [x] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view
+- [x] **Phase 2: Write Path** - POST endpoint, submission form, and end-to-end create-display loop verified
 
 ## Phase Details
 
 ### Phase 1: Read Path
-**Status**: passed
+**Status**: passed ✓
 **Goal**: Both services run locally, the data model is live, and a user can open the app and see all submitted requests (including a graceful empty state)
 **Depends on**: Nothing (first phase)
 **Requirements**: BACK-01, BACK-02, BACK-03, BACK-04, API-01, FRONT-01, FRONT-02, LIST-01, LIST-02, LIST-03, LIST-04
@@ -44,8 +44,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — RequestDto + POST /api/requests endpoint (201 on valid, 400 on blank field)
-- [ ] 02-02-PLAN.md — SubmissionForm component + App.tsx update + 6 Playwright E2E tests
+- [x] 02-01-PLAN.md — RequestDto + POST /api/requests endpoint (201 on valid, 400 on blank field)
+- [x] 02-02-PLAN.md — SubmissionForm component + App.tsx update + 6 Playwright E2E tests
 
 ## Progress
 
@@ -54,4 +54,4 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Read Path | 2/2 | passed | 2026-05-20 |
-| 2. Write Path | 0/2 | Not started | - |
+| 2. Write Path | 2/2 | passed | 2026-05-21 |
