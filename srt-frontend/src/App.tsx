@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import RequestList from './components/RequestList';
+import SubmissionForm from './components/SubmissionForm';
 import './App.css';
 
 type ActiveView = 'form' | 'list';
@@ -29,10 +30,7 @@ function App() {
           <RequestList />
         )}
         {activeView === 'form' && (
-          <div>
-            <h2>Submit Request</h2>
-            <p>Form coming in Phase 2.</p>
-          </div>
+          <SubmissionForm onSuccess={() => setActiveView('list')} />
         )}
       </main>
     </div>
