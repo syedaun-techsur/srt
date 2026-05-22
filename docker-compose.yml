@@ -1,0 +1,18 @@
+services:
+  # Pivota's K8s/Local sandbox backend detects this service and spawns a
+  # sibling Postgres container next to the app sandbox (sidecar pattern,
+  # see HANDOFF_SIDECAR_PATTERN.md in the pivota repo). It then injects
+  # SPRING_DATASOURCE_URL/USERNAME/PASSWORD into the app sandbox env so
+  # Spring connects to Postgres at startup with no code changes.
+  #
+  # If SPRING_DATASOURCE_URL is unset (no sidecar, e.g. plain `mvnw spring-boot:run`
+  # outside Pivota), application.properties falls back to the H2 in-memory
+  # config — preserving the zero-setup local-dev experience.
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: srt
+      POSTGRES_PASSWORD: srtdev
+      POSTGRES_DB: srt
+    ports:
+      - "5432:5432"

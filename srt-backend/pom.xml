@@ -41,6 +41,15 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Postgres driver — used when SPRING_DATASOURCE_URL is set by
+             Pivota's sidecar pattern. Coexists with H2 (driver auto-resolved
+             from the jdbc URL at runtime). -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Bean Validation (@NotBlank, @Valid) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
