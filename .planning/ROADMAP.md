@@ -10,13 +10,13 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 - Integer phases (1, 2): Planned milestone work
 - Decimal phases (1.1, 2.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view
+- [x] **Phase 1: Read Path** - Backend + frontend scaffolds, data model, GET endpoint, and request list view (completed 2026-05-20)
 - [ ] **Phase 2: Write Path** - POST endpoint, submission form, and end-to-end create-display loop verified
 
 ## Phase Details
 
 ### Phase 1: Read Path
-**Status**: passed
+**Status**: completed (2026-05-20)
 **Goal**: Both services run locally, the data model is live, and a user can open the app and see all submitted requests (including a graceful empty state)
 **Depends on**: Nothing (first phase)
 **Requirements**: BACK-01, BACK-02, BACK-03, BACK-04, API-01, FRONT-01, FRONT-02, LIST-01, LIST-02, LIST-03, LIST-04
@@ -28,8 +28,8 @@ SRT is delivered in two focused phases. Phase 1 builds the complete read path: s
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Spring Boot scaffold: H2, Request entity, CorsConfig, GET /api/requests
-- [ ] 01-02-PLAN.md — React+Vite scaffold: App shell, constants, types, RequestList component + Playwright tests
+- [x] 01-01-PLAN.md — Spring Boot scaffold: H2, Request entity, CorsConfig, GET /api/requests
+- [x] 01-02-PLAN.md — React+Vite scaffold: App shell, constants, types, RequestList component + Playwright tests
 
 ### Phase 2: Write Path
 **Status**: completed (2026-05-22)
